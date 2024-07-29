@@ -8,6 +8,8 @@ macro_rules! iprint {
         $crate::itm::write_fmt($channel, format_args!($($arg)*));
     };
 }
+//!#[macro_export] 属性使得宏可以被其他模块使用。
+//!没有 #[macro_export] 的宏将是私有的，不能在模块外部使用。
 
 /// Macro for sending a formatted string through an ITM channel, with a newline.
 #[macro_export]
@@ -22,6 +24,10 @@ macro_rules! iprintln {
         $crate::itm::write_fmt($channel, format_args!(concat!($fmt, "\n"), $($arg)*));
     };
 }
+//!这个宏有三种不同的匹配规则，用于处理不同数量的参数。
+//!这条规则匹配一个表达式参数 $channel。
+//!这条规则匹配两个表达式参数 $channel 和 $fmt。
+//!这条规则匹配两个以上的参数：$channel、$fmt 和一个可变数量的参数 $($arg)*。
 
 /// Macro to create a mutable reference to a statically allocated value
 ///
