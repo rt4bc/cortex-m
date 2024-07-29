@@ -31,11 +31,22 @@
 //! compile with older versions but that may change in any new patch release.
 
 #![deny(missing_docs)]
+//!这条指令告诉编译器，如果有缺少文档注释的公共项（如公有函数、结构体、模块等），就会触发编译错误。
+//!这有助于确保代码的公共 API 有详细的文档注释，从而提高代码的可维护性和可读性。
 #![no_std]
+//!这条指令禁用标准库，使得代码只能使用 core 库中的功能
 #![allow(clippy::identity_op)]
+//!这条指令告诉 clippy 静态分析工具不要对“恒等操作”发出警告。例如，不要警告类似于 x + 0 或 y * 1 
+//!这样的操作,尽管这些操作在数学上是多余的，但有时候它们可能用于保持代码的一致性或提高可读性。
 #![allow(clippy::missing_safety_doc)]
+//!这条指令告诉 clippy 不要对缺少安全性注释的 unsafe 代码块发出警告。在 Rust 中，unsafe 代码块
+//!需要特别小心处理，并且通常应该有详细的注释解释为什么这个代码块是安全的。
+//!这条指令允许在缺少这些注释的情况下通过静态分析。
 // Prevent clippy from complaining about empty match expression that are used for cfg gating.
 #![allow(clippy::match_single_binding)]
+//!这条指令告诉 clippy 不要对只有一个分支的 match 表达式发出警告。通常，只有一个分支的 match 
+//!表达式可以被简化为其他更简洁的表达方式，但有时候为了未来的扩展或条件编译（cfg gating），
+//!可能需要保留这样的 match 表达式。
 // This makes clippy warn about public functions which are not #[inline].
 //
 // Almost all functions in this crate result in trivial or even no assembly.
@@ -55,6 +66,8 @@
 
 #[macro_use]
 mod macros;
+//!#[macro_use] 是一个属性，用于将一个模块中的宏定义导入到当前作用域。通常，它在模块声明之前使用。
+//!这允许你在使用宏时不必显式地使用模块路径，从而简化宏的调用。
 
 pub mod asm;
 #[cfg(armv8m)]
