@@ -29,6 +29,23 @@ macro_rules! iprintln {
 //!这条规则匹配两个表达式参数 $channel 和 $fmt。
 //!这条规则匹配两个以上的参数：$channel、$fmt 和一个可变数量的参数 $($arg)*。
 
+//!在 Rust 宏中，ident 是一个特殊的标识符，表示一个标识符（identifier）。
+//!它用于接受并插入变量名或函数名。具体来说，它可以用来定义或引用代码中的标识符。
+//!使用 ident 可以动态地创建函数或变量。
+//!ident 可以用来引用现有的变量。
+//!ident 还可以用于生成结构体字段名、枚举变体名等
+//!更多类型还有block
+//!expr 用于表达式
+//!ident 用于变量名或函数名
+//!item
+//!literal 用于字面常量
+//!pat (模式 pattern)
+//!path
+//!stmt (语句 statement)
+//!tt (标记树 token tree)
+//!ty (类型 type)
+//!vis (可见性描述符)
+
 /// Macro to create a mutable reference to a statically allocated value
 ///
 /// This macro returns a value with type `Option<&'static mut $ty>`. `Some($expr)` will be returned
