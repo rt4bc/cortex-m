@@ -15,6 +15,10 @@ unsafe fn write_words(stim: &mut Stim, bytes: &[u32]) {
         p = p.offset(1);
     }
 }
+//安全性：由于 offset 和 read 是不安全的操作，必须放在 unsafe 块中使用。
+//使用 offset 时，需要确保指针不会越界；使用 read 时，需要确保指针指向的是有效的内存区域。
+//offset 用于将指针移动到指定位置（正向或反向），适用于内存遍历或指针运算。
+//read 用于从指针指向的内存中读取值，适用于读取内存中的数据而不改变所有权。
 
 /// Writes an aligned byte slice to the ITM.
 ///
