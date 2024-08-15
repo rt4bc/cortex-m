@@ -73,12 +73,19 @@ unsafe fn write_aligned_impl(port: &mut Stim, buffer: &[u8]) {
     }
 }
 
+// 这里首先声明一个单变量的结构体元组， 元组的成员是一个stim变量的引用。用的是括号，不是花括号！
+// 所以后面引用的时候，直接是self.0
+// 这个元组结构体初始化的时候， 标记的stim生命周期是'p, 那么也决定了Port的生命周期也是'p
+// 然后是生命的关联函数Write
+//如果关联函数的签名中包含引用，并且这些引用与某个结构体或泛型参数的生命周期相关，那么就需要标注生命周期。
 struct Port<'p>(&'p mut Stim);
 
 impl<'p> fmt::Write for Port<'p> {
     #[inline]
+    //write_str 方法: 这是实现 fmt::Write 的核心方法，它接收一个字符串切片 &str，然后执行写操作。
     fn write_str(&mut self, s: &str) -> fmt::Result {
         write_all(self.0, s.as_bytes());
+        //Ok(()) 表示写操作成功，符合 fmt::Result 类型的要求。
         Ok(())
     }
 }
@@ -89,9 +96,15 @@ impl<'p> fmt::Write for Port<'p> {
 /// way to accomplish and enforce such an alignment.
 #[repr(align(4))]
 pub struct Aligned<T: ?Sized>(pub T);
+//#[repr(align(4))] 是一个编译器属性，用于指定结构体或联合体的对齐要求。
+//在这个例子中，它强制 Aligned 结构体的内存对齐为 4 字节。
+
+//T: ?Sized：T 是一个泛型参数，类型为 T 的大小可以是已知的或未知的（即可以是 Sized 或 ?Sized）。
+//?Sized 是 Rust 中的一个特殊约束，表示类型 T 可能是不定大小的（比如动态大小类型，如 [T]、str 或某些 trait 对象）。
 
 /// Writes `buffer` to an ITM port.
 #[allow(clippy::missing_inline_in_public_items)]
+// Clippy 会在检测到公共 API 项（如 pub fn 或 pub const）未标注 #[inline] 时触发这个 lint
 pub fn write_all(port: &mut Stim, buffer: &[u8]) {
     unsafe {
         let mut len = buffer.len();
@@ -137,6 +150,8 @@ pub fn write_all(port: &mut Stim, buffer: &[u8]) {
 
         // The remaining data is 4-byte aligned, but might not be a multiple of 4 bytes
         write_aligned_impl(port, slice::from_raw_parts(ptr, len));
+        //slice::from_raw_parts 是 Rust 标准库中用于创建切片（slice）的一个非常重要的函数。
+        //它允许你从一个指针和一个长度构造一个切片，切片是 Rust 中常用的用于引用连续内存区域的类型。
     }
 }
 
