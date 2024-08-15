@@ -6,6 +6,7 @@ use core::{fmt, ptr, slice};
 
 use crate::peripheral::itm::Stim;
 
+//这里的bytes类型是u32，就是保证了32bit对齐
 // NOTE assumes that `bytes` is 32-bit aligned
 unsafe fn write_words(stim: &mut Stim, bytes: &[u32]) {
     let mut p = bytes.as_ptr();
