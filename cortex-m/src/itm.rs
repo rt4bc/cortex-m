@@ -24,13 +24,26 @@ unsafe fn write_words(stim: &mut Stim, bytes: &[u32]) {
 /// Writes an aligned byte slice to the ITM.
 ///
 /// `buffer` must be 4-byte aligned.
+/// 注意这里的buffer 是u8 类型
 unsafe fn write_aligned_impl(port: &mut Stim, buffer: &[u8]) {
     let len = buffer.len();
 
     if len == 0 {
         return;
     }
+    
+    //Clippy: Clippy 是一个 Rust 静态分析工具，提供了一组 lint（静态分析检查）
+    //来帮助开发者识别和纠正可能存在的错误、非最佳实践或潜在的问题。
+    //Clippy 的检查范围从性能优化建议到可能导致未定义行为的代码模式。
+    
+    //Lint: Lint 是对代码的静态检查，可以识别潜在的错误或非最佳实践。
+    //Rust 的 Clippy 工具提供了大量的 lint 来帮助保持代码的质量
 
+    // 当 Clippy 发现代码中存在从一个对齐要求较高的类型的指针强制转换为对齐要求较低的类型时，
+    // 它可能会触发 cast_ptr_alignment lint。例如，将一个 *const u64 类型的指针转换为 
+    //*const u8 类型的指针可能会触发这个 lint，因为 u64 通常需要 8 字节对齐，而 u8 只需要 1 字节对齐。
+    
+    //以下lint告诉 Clippy 忽略某段代码中的 cast_ptr_alignment lint
     let split = len & !0b11;
     #[allow(clippy::cast_ptr_alignment)]
     write_words(
