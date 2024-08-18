@@ -272,6 +272,10 @@ pub unsafe fn bootstrap(msp: *const u32, rv: *const u32) -> ! {
         options(noreturn, nomem, nostack),
     );
 }
+/// -> !：表示这个函数不会返回，因为它以 ! 为返回类型（表明函数会无限循环、崩溃或终止程序）。
+/// tmp = in(reg) 0：使用寄存器 tmp（值为0）作为输入参数。
+/// spsel = in(reg) 2：使用寄存器 spsel，值为2，指定要清除的 CONTROL 位。
+
 
 /// Bootload.
 ///
