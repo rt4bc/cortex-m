@@ -2,6 +2,7 @@ use critical_section::{set_impl, Impl, RawRestoreState};
 
 use crate::interrupt;
 use crate::register::primask;
+/// 这里的interrupt 和 register::primask是来自同一个crate, package的类型声明
 
 struct SingleCoreCriticalSection;
 set_impl!(SingleCoreCriticalSection);
